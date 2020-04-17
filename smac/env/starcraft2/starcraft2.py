@@ -731,11 +731,13 @@ class StarCraft2Env(MultiAgentEnv):
 
     def unit_shoot_range(self, agent_id):
         """Returns the shooting range for an agent."""
-        return 6
+        #TODO: Return this to 6
+        return -1
 
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
-        return 9
+        #TODO: Return this to 9
+        return 1
 
     def unit_max_cooldown(self, unit):
         """Returns the maximal cooldown for a unit."""
