@@ -736,7 +736,7 @@ class StarCraft2Env(MultiAgentEnv):
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
         #TODO: Return this to 9
-        return 7.2
+        return 6.3
 
     def unit_max_cooldown(self, unit):
         """Returns the maximal cooldown for a unit."""
@@ -878,10 +878,12 @@ class StarCraft2Env(MultiAgentEnv):
             # Movement features
             avail_actions = self.get_avail_agent_actions(agent_id)
             for m in range(self.n_actions_move):
+                # Kally comment: m+2 because the first two actions are "np-op" and "stop" resp.
                 move_feats[m] = avail_actions[m + 2]
 
             ind = self.n_actions_move
 
+            # Kally comment: Not particularly sure what pathing grid is supposed to be
             if self.obs_pathing_grid:
                 move_feats[
                     ind : ind + self.n_obs_pathing
@@ -901,6 +903,7 @@ class StarCraft2Env(MultiAgentEnv):
                     dist < sight_range and e_unit.health > 0
                 ):  # visible and alive
                     # Sight range > shoot range
+                    # Kally comment: is it possible to attack the enemy
                     enemy_feats[e_id, 0] = avail_actions[
                         self.n_actions_no_attack + e_id
                     ]  # available
