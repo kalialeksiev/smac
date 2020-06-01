@@ -898,22 +898,34 @@ class StarCraft2Env(MultiAgentEnv):
                 e_x = e_unit.pos.x
                 e_y = e_unit.pos.y
                 dist = self.distance(x, y, e_x, e_y)
+                max_dist = self.distance(0, 0, self.max_distance_x, self.max_distance_y)
 
+                # Kally comment change of structure  ....
                 if (
-                    dist < sight_range and e_unit.health > 0
+                    # dist < sight_range and e_unit.health > 0
+                    True
+
                 ):  # visible and alive
                     # Sight range > shoot range
                     # Kally comment: is it possible to attack the enemy
                     enemy_feats[e_id, 0] = avail_actions[
                         self.n_actions_no_attack + e_id
                     ]  # available
-                    enemy_feats[e_id, 1] = dist / sight_range  # distance
+                    # enemy_feats[e_id, 1] = dist / sight_range  # distance
+                    # enemy_feats[e_id, 2] = (
+                    #     e_x - x
+                    # ) / sight_range  # relative X
+                    # enemy_feats[e_id, 3] = (
+                    #     e_y - y
+                    # ) / sight_range  # relative Y
+                    enemy_feats[e_id, 1] = dist / max_dist  # distance
                     enemy_feats[e_id, 2] = (
                         e_x - x
-                    ) / sight_range  # relative X
+                    ) / self.max_distance_x  # relative X
                     enemy_feats[e_id, 3] = (
                         e_y - y
-                    ) / sight_range  # relative Y
+                    ) / self.max_distance_y  # relative Y
+
 
                     ind = 4
                     if self.obs_all_health:
@@ -942,14 +954,20 @@ class StarCraft2Env(MultiAgentEnv):
                 al_x = al_unit.pos.x
                 al_y = al_unit.pos.y
                 dist = self.distance(x, y, al_x, al_y)
-
+                # Kally comment change of structure to obtain observations of the whole state
+                # allied units here
+                max_dist = self.distance(0, 0, self.max_distance_x, self.max_distance_y)
                 if (
-                    dist < sight_range and al_unit.health > 0
+                    # dist < sight_range and al_unit.health > 0
+                    True
                 ):  # visible and alive
                     ally_feats[i, 0] = 1  # visible
-                    ally_feats[i, 1] = dist / sight_range  # distance
-                    ally_feats[i, 2] = (al_x - x) / sight_range  # relative X
-                    ally_feats[i, 3] = (al_y - y) / sight_range  # relative Y
+                    # ally_feats[i, 1] = dist / sight_range  # distance
+                    # ally_feats[i, 2] = (al_x - x) / sight_range  # relative X
+                    # ally_feats[i, 3] = (al_y - y) / sight_range  # relative Y
+                    ally_feats[i, 1] = dist / max_dist
+                    ally_feats[i, 2] = (al_x - x) / self.max_distance_x
+                    ally_feats[i, 3] = (al_y - y) / self.max_distance_y
 
                     ind = 4
                     if self.obs_all_health:
