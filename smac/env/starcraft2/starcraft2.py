@@ -736,7 +736,7 @@ class StarCraft2Env(MultiAgentEnv):
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
         #TODO: Return this to 9
-        return 0
+        return 1.5
 
     def unit_max_cooldown(self, unit):
         """Returns the maximal cooldown for a unit."""
@@ -902,8 +902,8 @@ class StarCraft2Env(MultiAgentEnv):
 
                 # Kally comment change of structure  ....
                 if (
-                    # dist < sight_range and e_unit.health > 0
-                    True
+                    dist < sight_range and e_unit.health > 0
+                    # True
 
                 ):  # visible and alive
                     # Sight range > shoot range
@@ -911,20 +911,20 @@ class StarCraft2Env(MultiAgentEnv):
                     enemy_feats[e_id, 0] = avail_actions[
                         self.n_actions_no_attack + e_id
                     ]  # available
-                    # enemy_feats[e_id, 1] = dist / sight_range  # distance
-                    # enemy_feats[e_id, 2] = (
-                    #     e_x - x
-                    # ) / sight_range  # relative X
-                    # enemy_feats[e_id, 3] = (
-                    #     e_y - y
-                    # ) / sight_range  # relative Y
-                    enemy_feats[e_id, 1] = dist / max_dist  # distance
+                    enemy_feats[e_id, 1] = dist / sight_range  # distance
                     enemy_feats[e_id, 2] = (
                         e_x - x
-                    ) / self.max_distance_x  # relative X
+                    ) / sight_range  # relative X
                     enemy_feats[e_id, 3] = (
                         e_y - y
-                    ) / self.max_distance_y  # relative Y
+                    ) / sight_range  # relative Y
+                    # enemy_feats[e_id, 1] = dist / max_dist  # distance
+                    # enemy_feats[e_id, 2] = (
+                    #     e_x - x
+                    # ) / self.max_distance_x  # relative X
+                    # enemy_feats[e_id, 3] = (
+                    #     e_y - y
+                    # ) / self.max_distance_y  # relative Y
 
 
                     ind = 4
@@ -958,16 +958,16 @@ class StarCraft2Env(MultiAgentEnv):
                 # allied units here
                 max_dist = self.distance(0, 0, self.max_distance_x, self.max_distance_y)
                 if (
-                    # dist < sight_range and al_unit.health > 0
-                    True
+                    dist < sight_range and al_unit.health > 0
+                    # True
                 ):  # visible and alive
                     ally_feats[i, 0] = 1  # visible
-                    # ally_feats[i, 1] = dist / sight_range  # distance
-                    # ally_feats[i, 2] = (al_x - x) / sight_range  # relative X
-                    # ally_feats[i, 3] = (al_y - y) / sight_range  # relative Y
-                    ally_feats[i, 1] = dist / max_dist
-                    ally_feats[i, 2] = (al_x - x) / self.max_distance_x
-                    ally_feats[i, 3] = (al_y - y) / self.max_distance_y
+                    ally_feats[i, 1] = dist / sight_range  # distance
+                    ally_feats[i, 2] = (al_x - x) / sight_range  # relative X
+                    ally_feats[i, 3] = (al_y - y) / sight_range  # relative Y
+                    # ally_feats[i, 1] = dist / max_dist
+                    # ally_feats[i, 2] = (al_x - x) / self.max_distance_x
+                    # ally_feats[i, 3] = (al_y - y) / self.max_distance_y
 
                     ind = 4
                     if self.obs_all_health:
