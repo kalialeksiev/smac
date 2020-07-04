@@ -736,7 +736,7 @@ class StarCraft2Env(MultiAgentEnv):
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
         #TODO: Return this to 9
-        return 1.5
+        return 9
 
     def unit_max_cooldown(self, unit):
         """Returns the maximal cooldown for a unit."""
@@ -755,8 +755,11 @@ class StarCraft2Env(MultiAgentEnv):
 
     def save_replay(self):
         """Save a replay."""
-        prefix = self.replay_prefix or self.map_name
-        replay_dir = self.replay_dir or ""
+        # Save replays in a specific location
+        # replay_dir = self.replay_dir or ""
+        # prefix = self.replay_prefix or self.map_name
+        prefix = "kally"
+        replay_dir = "/results/replays"
         replay_path = self._run_config.save_replay(
             self._controller.save_replay(), replay_dir=replay_dir, prefix=prefix)
         logging.info("Replay saved at: %s" % replay_path)
