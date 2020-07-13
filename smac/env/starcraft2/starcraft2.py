@@ -761,7 +761,7 @@ class StarCraft2Env(MultiAgentEnv):
         prefix = "kally"
         replay_dir = "/results/replays"
         replay_path = self._run_config.save_replay(
-            self._controller.save_replay(), replay_dir="/results/replays", prefix="kally")
+            self._controller.save_replay(), replay_dir="results/replays", prefix="kally")
         logging.info("Replay saved at: %s" % replay_path)
 
     def unit_max_shield(self, unit):
