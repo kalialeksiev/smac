@@ -759,7 +759,7 @@ class StarCraft2Env(MultiAgentEnv):
         # replay_dir = self.replay_dir or ""
         # prefix = self.replay_prefix or self.map_name
         prefix = "kally"
-        replay_dir = "/results/replays"
+        replay_dir = "results/replays"
         replay_path = self._run_config.save_replay(
             self._controller.save_replay(), replay_dir="results/replays", prefix="kally")
         logging.info("Replay saved at: %s" % replay_path)
