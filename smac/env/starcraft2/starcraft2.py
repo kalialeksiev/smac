@@ -286,6 +286,7 @@ class StarCraft2Env(MultiAgentEnv):
 
         # the running sight range parameter
         self.sight_range = 3.0
+        self.shoot_range = 6.0
 
         # Try to avoid leaking SC2 processes on shutdown
         atexit.register(lambda: self.close())
@@ -734,7 +735,7 @@ class StarCraft2Env(MultiAgentEnv):
 
     def unit_shoot_range(self, agent_id):
         """Returns the shooting range for an agent."""
-        return 6
+        return self.shoot_range
 
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
@@ -1321,7 +1322,7 @@ class StarCraft2Env(MultiAgentEnv):
                 avail_actions[5] = 1
 
             # Can attack only alive units that are alive in the shooting range
-            shoot_range = self.unit_shoot_range(agent_id)
+            shoot_range = self.shoot_range
 
             target_items = self.enemies.items()
             if self.map_type == "MMM" and unit.unit_type == self.medivac_id:
