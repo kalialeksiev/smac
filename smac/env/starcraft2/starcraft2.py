@@ -1401,7 +1401,7 @@ class StarCraft2Env(MultiAgentEnv):
         outside = np.zeros(len(actions))
 
         for agent_id, action in enumerate(actions):
-            outside[agent_id] = (self.avail_sight(agent_id)[actions] == 0)
+            outside[agent_id] = (self.avail_sight(agent_id)[action] == 0)
 
         return outside
 
