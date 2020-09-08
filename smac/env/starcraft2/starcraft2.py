@@ -1347,6 +1347,65 @@ class StarCraft2Env(MultiAgentEnv):
             # only no-op allowed
             return [1] + [0] * (self.n_actions - 1)
 
+    """ Returns the available actions for an agent that 
+        fall within the sight range
+    """
+    def avail_sight(self, agent_id):
+        unit = self.get_unit_by_id(agent_id)
+        if unit.health > 0:
+            # cannot choose no-op when alive
+            avail_actions = [0] * self.n_actions
+
+            # stop should be allowed
+            avail_actions[1] = 1
+
+            # see if we can move
+            if self.can_move(unit, Direction.NORTH):
+                avail_actions[2] = 1
+            if self.can_move(unit, Direction.SOUTH):
+                avail_actions[3] = 1
+            if self.can_move(unit, Direction.EAST):
+                avail_actions[4] = 1
+            if self.can_move(unit, Direction.WEST):
+                avail_actions[5] = 1
+
+            # Here can attack only units it can see
+            sight_range = self.sight_range
+
+            target_items = self.enemies.items()
+            if self.map_type == "MMM" and unit.unit_type == self.medivac_id:
+                # Medivacs cannot heal themselves or other flying units
+                target_items = [
+                    (t_id, t_unit)
+                    for (t_id, t_unit) in self.agents.items()
+                    if t_unit.unit_type != self.medivac_id
+                ]
+
+            for t_id, t_unit in target_items:
+                if t_unit.health > 0:
+                    dist = self.distance(
+                        unit.pos.x, unit.pos.y, t_unit.pos.x, t_unit.pos.y
+                    )
+                    if dist <= sight_range:
+                        avail_actions[t_id + self.n_actions_no_attack] = 1
+
+            return avail_actions
+
+        else:
+            # only no-op allowed
+            return [1] + [0] * (self.n_actions - 1)
+
+    """ Returns which actions fall outside the sight range
+    """
+    def outside_sight(self, actions):
+        outside = np.zeros(len(actions))
+
+        for agent_id, action in enumerate(actions):
+            outside[agent_id] = (self.avail_sight(agent_id)[actions] == 0)
+
+        return outside
+
+
     def get_avail_actions(self):
         """Returns the available actions of all agents in a list."""
         avail_actions = []
